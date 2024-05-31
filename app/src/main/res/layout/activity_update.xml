@@ -5,7 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".PostActivity">
+    tools:context=".UpdateActivity">
+
+    <EditText
+        android:id="@+id/idEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="User Id" />
 
     <EditText
         android:id="@+id/nameEditText"
@@ -37,6 +43,6 @@
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="POST" />
+        android:text="UPDATE" />
 </LinearLayout>
 

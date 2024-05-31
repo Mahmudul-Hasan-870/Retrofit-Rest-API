@@ -13,29 +13,31 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostActivity extends AppCompatActivity {
+public class UpdateActivity extends AppCompatActivity {
 
-    private EditText editTextName, editTextEmail, editTextPhone,editTextPassword;
+    private EditText editTextId, editTextName, editTextEmail, editTextPhone, editTextPassword;
     private Button buttonSubmit;
-    private static final String TAG = "PostActivity";
+    private static final String TAG = "UpdateActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
+        setContentView(R.layout.activity_update);
 
         // Initialize views
+        editTextId = findViewById(R.id.idEditText);
         editTextName = findViewById(R.id.nameEditText);
         editTextEmail = findViewById(R.id.emailEditText);
         editTextPhone = findViewById(R.id.phoneEditText);
         editTextPassword = findViewById(R.id.passwordEditText);
         buttonSubmit = findViewById(R.id.submitButton);
 
-        ApiService apiServices = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
 
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int userId = Integer.parseInt(editTextId.getText().toString());
                 String name = editTextName.getText().toString();
                 String email = editTextEmail.getText().toString();
                 String phone = editTextPhone.getText().toString();
@@ -43,25 +45,29 @@ public class PostActivity extends AppCompatActivity {
 
 
                 if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(PostActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-               User new_user = new User();
-                new_user.setName(name);
-                new_user.setEmail(email);
-                new_user.setPhone(phone);
-                new_user.setPassword(password);
+                User update_user = new User();
+                update_user.setName(name);
+                update_user.setEmail(email);
+                update_user.setPhone(phone);
+                update_user.setPassword(password);
 
-                Call<User> call = apiServices.createUser(new_user); // Initialize Call object
+                Call<User> call = apiService.updateUser(userId,update_user); // Initialize Call object
 
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
+                        Log.d(TAG, "Response code: " + response.code());
+                        Log.d(TAG, "Response message: " + response.message());
                         if (response.isSuccessful()) {
-                            Toast.makeText(PostActivity.this, "User created successfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateActivity.this, "User updated successfully!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(PostActivity.this, "Failed to create user.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateActivity.this, "Failed to updated user.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onFailure: " + response.message());
+
                         }
                     }
 

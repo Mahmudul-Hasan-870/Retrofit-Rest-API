@@ -2,11 +2,7 @@ package com.example.retrofit_rest_api;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +25,7 @@ public class GetActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ApiServices apiServices = RetrofitClient.getRetrofitInstance().create(ApiServices.class);
+        ApiService apiServices = RetrofitClient.getRetrofitInstance().create(ApiService.class);
         Call<List<User>> call = apiServices.getUsers();
 
         call.enqueue(new Callback<List<User>>() {
